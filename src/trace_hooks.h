@@ -7,11 +7,11 @@
 extern "C" {
 #endif
 
-#define traceENTER_xTaskCreateStatic(pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, puxStackBuffer, pxTaskBuffer) \
-    do { \
-        printf("traceENTER_xTaskCreateStatic: %s\n", pcName); \
+#define traceENTER_xTaskCreateStatic(pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, \
+                                     puxStackBuffer, pxTaskBuffer)                               \
+    do {                                                                                         \
+        printf("traceENTER_xTaskCreateStatic: %s\n", pcName);                                    \
     } while (0)
-
 
 #ifdef __cplusplus
 }

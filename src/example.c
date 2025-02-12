@@ -34,40 +34,32 @@
  */
 
 #include <FreeRTOS.h>
-#include <task.h>
-#include <queue.h>
-#include <timers.h>
-#include <semphr.h>
-
-#include <stdio.h>
 #include <assert.h>
+#include <queue.h>
+#include <semphr.h>
+#include <stdio.h>
+#include <task.h>
+#include <timers.h>
 
 static void exampleTask(void* parameters) __attribute__((noreturn));
 
 static void exampleTask(void* parameters) {
-    for(;;) {
+    for (;;) {
         printf("Tick\n");
-        vTaskDelay( 100 );
+        vTaskDelay(100);
     }
 }
 
 int main(void) {
     static StaticTask_t exampleTaskTCB;
-    static StackType_t exampleTaskStack[ configMINIMAL_STACK_SIZE ];
+    static StackType_t exampleTaskStack[configMINIMAL_STACK_SIZE];
 
     printf("Example FreeRTOS Project\n");
 
     // traceENTER_xTaskCreateStatic(1, 2, 3, 4, 5, 6);
 
-    xTaskCreateStatic(
-        exampleTask,
-        "example",
-        configMINIMAL_STACK_SIZE,
-        NULL,
-        configMAX_PRIORITIES - 1U,
-        &(exampleTaskStack[ 0 ]),
-        &(exampleTaskTCB)
-    );
+    xTaskCreateStatic(exampleTask, "example", configMINIMAL_STACK_SIZE, NULL,
+                      configMAX_PRIORITIES - 1U, &(exampleTaskStack[0]), &(exampleTaskTCB));
 
     vTaskStartScheduler();
     assert(0 && "Should not reach here.");
@@ -75,5 +67,5 @@ int main(void) {
 }
 
 #if (configCHECK_FOR_STACK_OVERFLOW > 0)
-    void vApplicationStackOverflowHook(TaskHandle_t xTask, char * pcTaskName ) {}
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char* pcTaskName) {}
 #endif /* #if ( configCHECK_FOR_STACK_OVERFLOW > 0 ) */

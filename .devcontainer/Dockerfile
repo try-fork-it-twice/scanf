@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 # Updating system and installing required dependencies
 RUN apt update
-RUN apt install -y build-essential git gcc make gdb cmake
+RUN apt install -y build-essential git gcc make gdb cmake clang-format
 RUN rm -rf /var/lib/apt/lists/*
 
 # Creating user

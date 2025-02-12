@@ -18,4 +18,3 @@ extern "C" {
 #endif
 
 #endif /* SCANF_TRACE_HOOKS_H */
-#include <stdio.h>

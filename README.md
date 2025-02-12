@@ -14,9 +14,6 @@ git submodule update --init --recursive
 To build and run the example task on FreeRTOS execute the following commands:
 
 ```bash
-mkdir -p build
-cd build
-cmake ..
-make
-./example
+cmake --build build
+./build/example
 ```

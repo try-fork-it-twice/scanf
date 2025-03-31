@@ -4,13 +4,7 @@
 
 #define SCANF_MAX_TASK_NAME_LEN 64
 
-/* clang-format off */
-typedef enum {
-    SCANF_TASK_CREATE,
-    SCANF_TASK_SWITCHED_IN,
-    SCANF_TASK_SWITCHED_OUT
-} SCANF_EventType;
-/* clang-format on */
+typedef enum { SCANF_TASK_CREATE, SCANF_TASK_SWITCHED_IN, SCANF_TASK_SWITCHED_OUT } SCANF_EventType;
 
 typedef struct __attribute__((__packed__)) {
     uint8_t event_type;

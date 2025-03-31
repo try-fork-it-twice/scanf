@@ -9,6 +9,7 @@ add_library(freertos_config INTERFACE)
 target_include_directories(freertos_config
     INTERFACE
     "./src"
+    "./samples"
 )
 
 if (DEFINED FREERTOS_SMP_EXAMPLE AND FREERTOS_SMP_EXAMPLE STREQUAL "1")
@@ -45,7 +46,8 @@ target_compile_options(freertos_kernel PRIVATE
 )
 
 add_executable(${PROJECT_NAME}
-    src/example.c
+    src/scanf.c
+    samples/example.c
 )
 
 target_link_libraries(${PROJECT_NAME} freertos_kernel freertos_config)

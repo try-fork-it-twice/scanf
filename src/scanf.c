@@ -45,12 +45,13 @@ int scanf_save_tracelog(const char *filepath)
         perror("scanf: failed to open a file to save trace log");
         return -EINVAL;
     }
-    unsigned long bytes = fwrite(_tracelog->messages, _tracelog->size, 1, file);
-    fclose(file);
+    unsigned long bytes = fwrite(_tracelog->messages, 1, _tracelog->size, file);
     if (bytes < _tracelog->size) {
         perror("scanf: failed to write whole log to a file");
+        fclose(file);
         return -EFAULT;
     }
+    fclose(file);
     return 0;
 }
 

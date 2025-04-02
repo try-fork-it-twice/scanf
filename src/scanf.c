@@ -60,7 +60,6 @@ void _scanf_save_trace(const void *message, uint32_t message_size)
     if (!_tracelog) return;
     if (!_is_tracing) return;
     if ((_tracelog->size + message_size) >= _tracelog->capacity) return;
-    printf("Saving event\n");
     memcpy(&_tracelog->messages[_tracelog->size], message, message_size);
     _tracelog->size += message_size;
 }

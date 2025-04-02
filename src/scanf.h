@@ -36,6 +36,6 @@ void scanf_start_tracing();
 void scanf_stop_tracing();
 
 /**
- * Save recorder trace log to the file.
+ * Save recorded trace log to the file.
  */
 int scanf_save_tracelog(const char *filepath);

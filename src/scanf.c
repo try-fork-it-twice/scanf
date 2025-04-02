@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
+#include <errno.h>
 
 static SCANF_Tracelog *_tracelog = NULL;
 static bool _is_tracing = false;
@@ -33,6 +34,24 @@ void scanf_start_tracing()
 void scanf_stop_tracing()
 {
     _is_tracing = false;
+}
+
+int scanf_save_tracelog(const char *filepath)
+{
+    if (!_tracelog) return -EINVAL;
+    if (_is_tracing) return -EBUSY;
+    FILE *file = fopen(filepath, "wb");
+    if (!file) {
+        perror("scanf: failed to open a file to save trace log");
+        return -EINVAL;
+    }
+    unsigned long bytes = fwrite(_tracelog->messages, _tracelog->size, 1, file);
+    fclose(file);
+    if (bytes < _tracelog->size) {
+        perror("scanf: failed to write whole log to a file");
+        return -EFAULT;
+    }
+    return 0;
 }
 
 void _scanf_save_trace(const void *message, uint32_t message_size)

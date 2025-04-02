@@ -39,6 +39,8 @@ int main(void) {
 
     scanf_stop_tracing();
 
+    scanf_save_tracelog("data.bin");
+
     vTaskStartScheduler();
     assert(0 && "Should not reach here.");
     return 0;

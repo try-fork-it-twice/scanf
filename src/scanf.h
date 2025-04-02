@@ -34,3 +34,8 @@ void scanf_start_tracing();
  * Stop recording events in the trace log.
  */
 void scanf_stop_tracing();
+
+/**
+ * Save recorder trace log to the file.
+ */
+int scanf_save_tracelog(const char *filepath);

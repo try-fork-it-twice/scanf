@@ -1,5 +1,8 @@
 #include "scanf.h"
 
+#include <FreeRTOS.h>
+#include <task.h>
+
 #include <stddef.h>
 #include <stdbool.h>
 #include <string.h>
@@ -40,14 +43,12 @@ int scanf_save_tracelog(const char *filepath)
 {
     if (!_tracelog) return -EINVAL;
     if (_is_tracing) return -EBUSY;
-    FILE *file = fopen(filepath, "wb");
+    FILE *file = fopen(filepath, "ab");
     if (!file) {
-        perror("scanf: failed to open a file to save trace log");
         return -EINVAL;
     }
     unsigned long bytes = fwrite(_tracelog->messages, 1, _tracelog->size, file);
     if (bytes < _tracelog->size) {
-        perror("scanf: failed to write whole log to a file");
         fclose(file);
         return -EFAULT;
     }
@@ -62,4 +63,9 @@ void _scanf_save_trace(const void *message, uint32_t message_size)
     if ((_tracelog->size + message_size) >= _tracelog->capacity) return;
     memcpy(&_tracelog->messages[_tracelog->size], message, message_size);
     _tracelog->size += message_size;
+}
+
+uint32_t _scanf_get_timestamp()
+{
+    return (xTaskGetTickCount() * 1000000) / configTICK_RATE_HZ;
 }

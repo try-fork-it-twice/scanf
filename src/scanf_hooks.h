@@ -10,13 +10,14 @@
 extern "C" {
 #endif
 
-void _scanf_save_trace(void *message, uint32_t size);
+void _scanf_save_trace(const void *message, uint32_t size);
+uint32_t _scanf_get_timestamp();
 
 #define traceTASK_CREATE(pxNewTCB)                              \
     do {                                                        \
         SCANF_TASK_CREATE_TraceMessage message;                 \
         message.event_type = SCANF_TASK_CREATE;                 \
-        message.timestamp = (uint32_t)xTaskGetTickCount();      \
+        message.timestamp = _scanf_get_timestamp();             \
         message.task_number = (uint32_t)pxNewTCB->uxTaskNumber; \
         strcpy(message.task_name, pxNewTCB->pcTaskName);        \
         _scanf_save_trace(&message, sizeof(message));           \
@@ -26,7 +27,7 @@ void _scanf_save_trace(void *message, uint32_t size);
     do {                                                            \
         SCANF_TASK_SWITCHED_IN_TraceMessage message;                \
         message.event_type = SCANF_TASK_SWITCHED_IN;                \
-        message.timestamp = (uint32_t)xTaskGetTickCount();          \
+        message.timestamp = _scanf_get_timestamp();                 \
         message.task_number = (uint32_t)pxCurrentTCB->uxTaskNumber; \
         _scanf_save_trace(&message, sizeof(message));               \
     } while (0)
@@ -35,7 +36,7 @@ void _scanf_save_trace(void *message, uint32_t size);
     do {                                                            \
         SCANF_TASK_SWITCHED_OUT_TraceMessage message;               \
         message.event_type = SCANF_TASK_SWITCHED_OUT;               \
-        message.timestamp = (uint32_t)xTaskGetTickCount();          \
+        message.timestamp = _scanf_get_timestamp();                 \
         message.task_number = (uint32_t)pxCurrentTCB->uxTaskNumber; \
         _scanf_save_trace(&message, sizeof(message));               \
     } while (0)

@@ -40,8 +40,6 @@
  * generic file, if one is available.
  ******************************************************************************/
 
-#include "trace_hooks.h"
-
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 

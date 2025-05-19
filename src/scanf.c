@@ -26,8 +26,8 @@ void scanf_reset() {
     static SCANF_CONFIG_TraceMessage config_message;
     config_message.event_type = SCANF_CONFIG;
     // TODO: Pass version through CMake
-    config_message.version.major = 0;
-    config_message.version.minor = 2;
+    config_message.version.major = 1;
+    config_message.version.minor = 0;
     config_message.version.patch = 0;
     config_message.config_max_task_name_len = SCANF_MAX_TASK_NAME_LEN;
 

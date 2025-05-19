@@ -30,7 +30,11 @@ void scanf_reset() {
     config_message.version.minor = 2;
     config_message.version.patch = 0;
     config_message.config_max_task_name_len = SCANF_MAX_TASK_NAME_LEN;
+
+    bool prev_is_tracing = _is_tracing;
+    _is_tracing = true;
     _scanf_save_trace((void *)&config_message, sizeof(config_message));
+    _is_tracing = prev_is_tracing;
 }
 
 void scanf_start_tracing() { _is_tracing = true; }
@@ -44,6 +48,7 @@ int scanf_save_tracelog(const char *filepath) {
     if (!file) {
         return -EINVAL;
     }
+    printf("here!\n");
     unsigned long bytes = fwrite(_tracelog->messages, 1, _tracelog->size, file);
     if (bytes < _tracelog->size) {
         fclose(file);

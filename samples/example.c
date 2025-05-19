@@ -1,13 +1,12 @@
 #include <FreeRTOS.h>
 #include <assert.h>
 #include <queue.h>
+#include <scanf.h>
 #include <semphr.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <task.h>
 #include <timers.h>
-
-#include <scanf.h>
 
 static void exampleTask(void* parameters) __attribute__((noreturn));
 
@@ -15,13 +14,13 @@ static void exampleTask(void* parameters) {
     size_t i = 0;
     for (;;) {
         printf("Tick 0\n");
-        for (size_t j = 0; j < 1000; j++) {
+        for (size_t j = 0; j < 10000; j++) {
             printf("1\n");
         }
-        vTaskDelay(100);
+        vTaskDelay(1);
 
         if (i++ == 100) {
-            SCANF_Tracelog *tl = scanf_get_tracelog();
+            SCANF_Tracelog* tl = scanf_get_tracelog();
             printf("Saving trace log. Trace log size %d\n", tl->size);
             scanf_stop_tracing();
             scanf_save_tracelog("data.bin");
@@ -30,20 +29,18 @@ static void exampleTask(void* parameters) {
     }
 }
 
-
 static void exampleTask1(void* parameters) __attribute__((noreturn));
 
 static void exampleTask1(void* parameters) {
     size_t i = 0;
     for (;;) {
         printf("Tick 1\n");
-        for (size_t j = 0; j < 5000; j++) {
+        for (size_t j = 0; j < 50000; j++) {
             printf("2\n");
         }
-        vTaskDelay(500);
+        vTaskDelay(5);
     }
 }
-
 
 static void exampleTask2(void* parameters) __attribute__((noreturn));
 
@@ -51,13 +48,12 @@ static void exampleTask2(void* parameters) {
     size_t i = 0;
     for (;;) {
         printf("Tick 2\n");
-        for (size_t j = 0; j < 10000; j++) {
+        for (size_t j = 0; j < 100000; j++) {
             printf("3\n");
         }
-        vTaskDelay(1000);
+        vTaskDelay(10);
     }
 }
-
 
 int main(void) {
     static StaticTask_t exampleTaskTCB;
@@ -68,7 +64,6 @@ int main(void) {
 
     static StaticTask_t exampleTask2TCB;
     static StackType_t exampleTask2Stack[configMINIMAL_STACK_SIZE];
-
 
     printf("Example FreeRTOS Project\n");
 
@@ -84,13 +79,13 @@ int main(void) {
     scanf_start_tracing();
 
     xTaskCreateStatic(exampleTask, "task0", configMINIMAL_STACK_SIZE, NULL,
-        configMAX_PRIORITIES - 1U, &(exampleTaskStack[0]), &(exampleTaskTCB));
+                      configMAX_PRIORITIES - 1U, &(exampleTaskStack[0]), &(exampleTaskTCB));
 
     xTaskCreateStatic(exampleTask1, "task1", configMINIMAL_STACK_SIZE, NULL,
-        configMAX_PRIORITIES - 1U, &(exampleTask1Stack[0]), &(exampleTask1TCB));
+                      configMAX_PRIORITIES - 1U, &(exampleTask1Stack[0]), &(exampleTask1TCB));
 
     xTaskCreateStatic(exampleTask2, "task2", configMINIMAL_STACK_SIZE, NULL,
-        configMAX_PRIORITIES - 1U, &(exampleTask2Stack[0]), &(exampleTask2TCB));
+                      configMAX_PRIORITIES - 1U, &(exampleTask2Stack[0]), &(exampleTask2TCB));
 
     vTaskStartScheduler();
     assert(0 && "Should not reach here.");

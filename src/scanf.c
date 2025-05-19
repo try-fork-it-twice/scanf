@@ -48,7 +48,6 @@ int scanf_save_tracelog(const char *filepath) {
     if (!file) {
         return -EINVAL;
     }
-    printf("here!\n");
     unsigned long bytes = fwrite(_tracelog->messages, 1, _tracelog->size, file);
     if (bytes < _tracelog->size) {
         fclose(file);

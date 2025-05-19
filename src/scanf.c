@@ -40,7 +40,7 @@ void scanf_stop_tracing() { _is_tracing = false; }
 int scanf_save_tracelog(const char *filepath) {
     if (!_tracelog) return -EINVAL;
     if (_is_tracing) return -EBUSY;
-    FILE *file = fopen(filepath, "ab");
+    FILE *file = fopen(filepath, "wb");
     if (!file) {
         return -EINVAL;
     }

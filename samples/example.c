@@ -21,7 +21,8 @@ static void exampleTask(void* parameters) {
 
         if (i++ == 100) {
             SCANF_Tracelog* tl = scanf_get_tracelog();
-            printf("Saving trace log. Trace log size %d\n", tl->size);
+            printf("Saving trace log. Trace log size %u, dropped events %u\n", tl->size,
+                   tl->dropped);
             scanf_stop_tracing();
             scanf_save_tracelog("data.bin");
             exit(0);
@@ -67,16 +68,11 @@ int main(void) {
 
     printf("Example FreeRTOS Project\n");
 
-    /* Static: scanf_init() keeps this pointer, but vTaskStartScheduler() never
-     * returns, so anything on main's stack would be dead memory by then. */
-    enum { BUFFER_SIZE = 1024 };
-    static SCANF_EventType messages[BUFFER_SIZE];
-    static SCANF_Tracelog tracelog = {
-        .size = 0,
-        .capacity = BUFFER_SIZE,
-        .messages = messages,
-    };
-    scanf_init(&tracelog);
+    SCANF_DEFINE_TRACELOG(tracelog, 8192);
+    if (scanf_init(&tracelog) != 0) {
+        printf("Failed to initialize the trace log\n");
+        return 1;
+    }
 
     scanf_start_tracing();
 

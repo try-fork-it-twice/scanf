@@ -67,9 +67,11 @@ int main(void) {
 
     printf("Example FreeRTOS Project\n");
 
-    const int BUFFER_SIZE = 1024;
-    SCANF_EventType messages[BUFFER_SIZE];
-    SCANF_Tracelog tracelog = {
+    /* Static: scanf_init() keeps this pointer, but vTaskStartScheduler() never
+     * returns, so anything on main's stack would be dead memory by then. */
+    enum { BUFFER_SIZE = 1024 };
+    static SCANF_EventType messages[BUFFER_SIZE];
+    static SCANF_Tracelog tracelog = {
         .size = 0,
         .capacity = BUFFER_SIZE,
         .messages = messages,

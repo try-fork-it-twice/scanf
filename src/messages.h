@@ -9,7 +9,8 @@ typedef enum __attribute__((__packed__)) {
     SCANF_CONFIG = 0,
     SCANF_TASK_CREATE,
     SCANF_TASK_SWITCHED_IN,
-    SCANF_TASK_SWITCHED_OUT
+    SCANF_TASK_SWITCHED_OUT,
+    SCANF_OVERFLOW
 } SCANF_EventType;
 static_assert(sizeof(SCANF_EventType) == 1, "sizeof(SCANF_EventType) > 1");
 
@@ -48,3 +49,13 @@ typedef struct __attribute__((__packed__)) {
     uint32_t timestamp;
     uint32_t task_number;
 } SCANF_TASK_SWITCHED_OUT_TraceMessage;
+
+/**
+ * Emitted at the very end of the trace when events had to be discarded because
+ * the trace log ran out of room. Its absence means the trace is complete.
+ */
+typedef struct __attribute__((__packed__)) {
+    SCANF_EventType event_type;
+    uint32_t timestamp; /* when the first event was discarded */
+    uint32_t dropped;   /* how many events were discarded in total */
+} SCANF_OVERFLOW_TraceMessage;
